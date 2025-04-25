@@ -16,11 +16,24 @@ config.pixel_width = 1280
 config.frame_height = 4
 config.frame_width = 7.2
 config.media_dir = os.path.join(os.path.dirname(current_dir), "..", "media")
-
+# config.background_color = WHITE
 
 class simpleRandomSamplingScene(Scene):    
+    def title(self):
+        title = Tex("Simple Random Sampling", font_size=40).to_edge(UP)
+        logo = ImageMobject(os.path.join(os.path.dirname(os.path.dirname(current_dir)), "utils/WUSTClimber_logo.png")).scale(0.3).to_edge(DOWN)
+        self.play(Write(title), FadeIn(logo))
+        self.wait(1)
+        self.play(
+            FadeOut(title),
+            logo.animate.to_corner(DL*0.1)
+        )
+
     @log_scene()
     def construct(self):
+        # Title
+        self.title()
+
         # Create a list of points
         grid_size = 1
         positions = [
@@ -34,7 +47,8 @@ class simpleRandomSamplingScene(Scene):
         sampled_points = simpleRandomSampling(points, 3)
 
         # Add the points to the scene
-        self.add(*points)
+        self.play(FadeIn(Group(*points)))
+        # self.add(*points)
         self.wait(1)
 
         # Animate the sampling process
